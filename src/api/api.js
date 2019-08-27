@@ -10,11 +10,11 @@ function initApi() {
             }
         }
     );
-    api.init()
+    api.init();
     return api
 }
 
-function initApiLogged() {
+function initApiLogged(token) {
     const api = new OpenAPIClientAxios(
         {
             // definition: 'http://192.168.0.70:8000/openapi',
@@ -22,14 +22,14 @@ function initApiLogged() {
             axiosConfigDefaults: {
                 baseURL: 'http://192.168.0.70:8000/',
                 headers: {
-                    'Authorization': `Token ${localStorage.getItem('token')}`
+                    'Authorization': `Token ${token}`
                 }
             }
         }
     );
-    api.init()
+    api.init();
     return api
 }
 
 export const apiLogin = initApi();
-export const api = initApiLogged();
+export const api = initApiLogged;

@@ -26,10 +26,6 @@ class Header extends React.Component {
                     >
                         <MenuIcon/>
                     </IconButton>
-                    {/*<Typography variant="h6" styles={style.title}>*/}
-                    {/*    News*/}
-                    {/*</Typography>*/}
-                    {/*<Button color="inherit">Login</Button>*/}
                 </Toolbar>
             </AppBar>
         )

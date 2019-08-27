@@ -1,26 +1,38 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+import {connect} from "react-redux";
+import Routes from "./container/routes";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            openDrawer: false
+        };
+    }
+
+    toggleDrawer(open) {
+        this.setState({openDrawer: !this.state.openDrawer})
+    }
+
+    render() {
+        return (
+            <div>
+                <Routes openDrawer={this.state.openDrawer} toggleDrawer={this.toggleDrawer.bind(this)}
+                        auth={this.props.auth}/>
+            </div>
+        )
+    }
 }
 
-export default App;
+const mapStateToProps = function (state) {
+    return {
+        auth: state.auth.token,
+        loading: state.auth.loading,
+    }
+};
+
+export default connect(
+    mapStateToProps,
+    null
+)(App);

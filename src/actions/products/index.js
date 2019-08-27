@@ -1,54 +1,64 @@
-import {apiLogin} from "../../api/api";
+import {api} from "../../api/api";
 
-export const loginRequest = () => ({
-    type: 'LOGIN_REQUEST'
+// ======== Products ========
+export const productsRequest = () => ({
+    type: 'PRODUCTS_REQUEST'
 });
 
-export const loginFulfill = (data) => ({
-    type: 'LOGIN_FULFILL',
-    token: data
+export const productsFulfill = (data) => ({
+    type: 'PRODUCTS_FULFILL',
+    products: data
 });
 
-export const loginRejected = (data) => ({
-    type: 'LOGIN_REJECTED',
+export const productsRejected = (err) => ({
+    type: 'PRODUCTS_REJECTED',
+    error: err
+});
+
+export const productsUpdate = (data) => ({
+    type: 'PRODUCTS_UPDATE',
     error: data
 });
 
-export const logoutRequest = (data) => ({
-    type: 'LOGOUT_REQUEST',
-    token: null
-});
-
-export const login = (data, history, oldPath) => {
-    const request = apiLogin.getClient().then((client) => {
-            return client.auth_token_login_create(null, {
-                username: data.username,
-                password: data.password
-            });
+export const getProducts = () => {
+    const token = window.localStorage.getItem('token');
+    const request = api(token).getClient().then((client) => {
+            return client.products_list();
         }
     );
     return (dispatch) => {
-        dispatch(loginRequest());
+        dispatch(productsRequest());
         return request.then(res => {
-            setTimeout(() => {
-                dispatch(loginFulfill(res.data));
-                history.push(oldPath);
-            }, 500);
-            localStorage.setItem("token", res.data.auth_token);
-        }).catch(err => {
-            dispatch(
-                loginRejected(
-                    err.response.data["non_field_errors"] ?
-                        "Usuário e/ou senha inválidos." :
-                        "Erro inesperado."
-                )
-            )
+            dispatch(productsFulfill(res.data));
+        }).catch((err) => {
+            console.log(err);
+            dispatch(productsRejected(err));
         })
     };
 };
+// ==========================
 
-export const logout = () => {
+// ======== Product =========
+export const productRequest = () => ({
+    type: 'PRODUCT_REQUEST'
+});
+
+export const productFulfill = (data) => ({
+    type: 'PRODUCT_FULFILL',
+    product: data
+});
+
+export const getProduct = (uuid) => {
+    const token = window.localStorage.getItem('token');
+    const request = api(token).getClient().then((client) => {
+            return client.products_read(uuid);
+        }
+    );
     return (dispatch) => {
-        dispatch(logoutRequest())
-    }
+        dispatch(productRequest());
+        return request.then(res => {
+            dispatch(productFulfill(res.data));
+        })
+    };
 };
+// ==========================

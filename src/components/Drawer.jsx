@@ -10,13 +10,13 @@ import Category from '@material-ui/icons/Category';
 import ViewHeadline from "@material-ui/icons/ViewHeadline";
 import {ExitToApp, Home} from "@material-ui/icons";
 import {Link} from "react-router-dom";
-import {api} from "../api/api";
+import {logout} from "../actions/login";
+import {connect} from "react-redux";
 
 class TempDrawer extends React.Component {
     constructor(props) {
         super(props);
         this.state = {};
-        console.log(props);
     }
 
     toggleDrawer = (side, open) => event => {
@@ -33,12 +33,12 @@ class TempDrawer extends React.Component {
     }
 
     async logout() {
-        const client = await api.getClient();
-        await client.auth_token_logout_create();
-        window.localStorage.clear();
+        // const client = await api.getClient();
+        // await client.auth_token_logout_create();
+        this.props.logout();
     }
 
-    sideList(side) {
+    sideList() {
         return (
             <div
                 role="presentation"
@@ -52,13 +52,13 @@ class TempDrawer extends React.Component {
                         <ListItemText>Home</ListItemText>
                     </ListItem>
                     <Divider/>
-                    <ListItem button component={Link} to='/company'>
+                    <ListItem button component={Link} to='/products'>
                         <ListItemIcon><ViewHeadline/></ListItemIcon>
-                        <ListItemText>Companies</ListItemText>
+                        <ListItemText>Products</ListItemText>
                     </ListItem>
                     <ListItem button disabled>
                         <ListItemIcon><ColorLens/></ListItemIcon>
-                        <ListItemText>Employees</ListItemText>
+                        <ListItemText>Stores</ListItemText>
                     </ListItem>
                     <ListItem button disabled>
                         <ListItemIcon><Category/></ListItemIcon>
@@ -79,11 +79,28 @@ class TempDrawer extends React.Component {
         return (
             <div>
                 <Drawer open={this.props.open} onClose={this.props.closeDrawer}>
-                    {this.sideList('left')}
+                    {this.sideList()}
                 </Drawer>
             </div>
         )
     }
 }
 
-export default TempDrawer;
+const mapStateToProps = function (state) {
+    return {
+        auth: state.auth.token.auth_token,
+    }
+};
+
+const mapDispatchToProps = dispatch => {
+    return {
+        logout: () => {
+            dispatch(logout());
+        }
+    };
+};
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(TempDrawer);

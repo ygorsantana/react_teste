@@ -1,6 +1,6 @@
 import React from "react";
 
-class LoginScreen extends React.Component {
+class OrdersScreen extends React.Component {
     constructor(props) {
         super(props);
         this.state = {};
@@ -13,4 +13,4 @@ class LoginScreen extends React.Component {
     }
 }
 
-export default LoginScreen;
+export default OrdersScreen;

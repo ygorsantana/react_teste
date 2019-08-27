@@ -1,6 +1,6 @@
 import React from "react";
 
-class HomeScreen extends React.Component {
+class StoresScreen extends React.Component {
     constructor(props) {
         super(props);
         this.state = {};
@@ -13,4 +13,4 @@ class HomeScreen extends React.Component {
     }
 }
 
-export default HomeScreen;
+export default StoresScreen;

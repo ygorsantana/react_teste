@@ -1,32 +1,40 @@
 const initialState = {
-    token: "",
+    products: [],
+    product: {},
     loading: false,
     error: null,
 };
-export const auth = (state = initialState, action) => {
+export const products = (state = initialState, action) => {
     switch (action.type) {
-        case 'LOGIN_REQUEST':
+        case 'PRODUCTS_REQUEST':
             return {
                 ...state,
                 loading: true
             };
-        case 'LOGIN_FULFILL':
+        case 'PRODUCTS_FULFILL':
             return {
                 ...state,
-                token: action.token,
+                products: action.products,
                 loading: false,
                 error: null
             };
-        case 'LOGIN_REJECTED':
+        case 'PRODUCTS_REJECTED':
             return {
                 ...state,
                 loading: false,
                 error: action.error
             };
-        case 'LOGOUT_REQUEST':
+        case 'PRODUCT_REQUEST':
             return {
                 ...state,
-                token: action.token
+                loading: true,
+            };
+        case 'PRODUCT_FULFILL':
+            return {
+                ...state,
+                product: action.product,
+                loading: false,
+                error: null
             };
         default:
             return state;
